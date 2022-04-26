@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <title>ECharts</title>
+    <!-- 引入刚刚下载的 ECharts 文件 -->
+    <script src="js/echarts.js"></script>
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		html,body{
+			height: 2400px;
+			width: 100%;
+		}
+		div{
+			float: left;
+		}
+	</style>
+  </head>
+  <body>
+    <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+    <div id="main" style="width: 800px;height:600px;"></div>
+	<!-- 写到这里比较好,性能高 -->
+	<script type="text/javascript">
+	  // 基于准备好的dom，初始化echarts实例	
+      const myChart = echarts.init(document.getElementById('main'));
+
+      // 指定图表的配置项和数据
+      const option = {			//echarts官方手册规定的
+          title: {
+              text: '青岛未来一周温度数据'
+          },
+          tooltip: {
+              trigger: 'axis'
+          },
+          legend: {},
+          toolbox: {
+              show: true,
+              feature: {
+                  dataZoom: {
+                      yAxisIndex: 'none'
+                  },
+                  dataView: {readOnly: false},
+                  magicType: {type: ['line', 'bar']},
+                  restore: {},
+                  saveAsImage: {}
+              }
+          },
+          xAxis: {
+              type: 'category',
+              boundaryGap: false,
+              data: ["昨天","今天","明天","周四","周五","周六","周日","周一"]
+          },
+          yAxis: {
+              type: 'value',
+              axisLabel: {
+                  formatter: '{value} °C'
+              }
+          },
+          series: [
+              {
+                  name: '最高气温',
+                  type: 'line',
+                  data: ["15","24","16","17","17","19","19","18"],
+                  markPoint: {
+                      data: [
+                          {type: 'max', name: 'Max'},
+                          {type: 'min', name: 'Min'}
+                      ]
+                  },
+                  markLine: {
+                      data: [{type: 'average', name: 'Avg'}]
+                  }
+              },
+              {
+                  name: '最低气温',
+                  type: 'line',
+                  data: ["13","12","10","11","11","10","12","14"],
+                  markPoint: {
+                      data: [{name: '周最低', value: 10 , xAxis: 2 , yAxis: 10}]
+                  },
+                  markLine: {
+                      data: [
+                          {type: 'average', name: 'Avg'},
+                          [
+                              {
+                                  symbol: 'none',
+                                  x: '90%',
+                                  yAxis: 'max'
+                              },
+                              {
+                                  symbol: 'circle',
+                                  label: {
+                                      position: 'start',
+                                      formatter: 'Max'
+                                  },
+                                  type: 'max',
+                                  name: '最高点'
+                              }
+                          ]
+                      ]
+                  }
+              }
+          ]
+      };
+      myChart.setOption(option);
+	</script>
+  </body>
+</html>
